@@ -1,0 +1,48 @@
+//Set as Mandatory , Null validation
+            if (String.IsNullOrEmpty(codeTextBox.Text))
+            {
+                MessageBox.Show("Code Can not be Empty!!!");
+                return;
+            }
+            if (String.IsNullOrEmpty(nameTextBox.Text))
+            {
+                MessageBox.Show("Name Can not be Empty!!!");
+                return;
+            }
+ //Length check , Length size validation
+            if (codeTextBox.Text.Length != 4)
+            {
+                MessageBox.Show("Code must be 4 digit!!!");
+                return;
+            }
+//Check UNIQUE, UNIQUE validation
+                if (_categoryManager.IsCodeExists(category))
+                {
+                    MessageBox.Show(codeTextBox.Text + " Already Exists!");
+                    return;
+                }
+
+                if (_categoryManager.IsNameExists(category))
+                {
+                    MessageBox.Show(nameTextBox.Text + " Already Exists!");
+                    return;
+                }
+
+//Set as Mandatory , Null validation
+if (String.IsNullOrEmpty(searchTextBox.Text))
+            {
+                showDataGridView.DataSource = _categoryManager.Display();
+                
+            }
+            else
+            {
+                showDataGridView.DataSource = _categoryManager.Search(searchTextBox.Text);
+            }
+
+//Set as Mandatory , Initialize validation
+  public CategoryUI()
+        {
+            
+            InitializeComponent();
+            showDataGridView.DataSource = _categoryManager.Display();
+        }

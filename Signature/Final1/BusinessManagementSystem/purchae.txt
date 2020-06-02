@@ -1,0 +1,615 @@
+ public DataTable Search(string search)
+        {
+            //Connection
+            string connectionString = @"Server=DESKTOP-0LIAG2C\SQLEXPRESS; Database=BusinessManagementSystem; Integrated Security=True";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+            //Command
+            string commandString = @"SELECT Purchase.Code, PurchaseItems.ManufacturedDate, PurchaseItems.ExpireDate, PurchaseItems.Quantity, PurchaseItems.UnitPrice, PurchaseItems.TotalPrice, PurchaseItems.MRP, PurchaseItems.Remarks FROM Purchase LEFT JOIN PurchaseItems ON Purchase.Id = PurchaseItems.Id WHERE Purchase.Code = '" + search + "' ";
+            SqlCommand sqlCommand = new SqlCommand(commandString, sqlConnection);
+
+            //Execute
+            if (sqlConnection.State == ConnectionState.Closed)
+            {
+                sqlConnection.Open();
+            }
+
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+            DataTable dataTable = new DataTable();
+            sqlDataAdapter.Fill(dataTable);
+
+            //Close
+            sqlConnection.Close();
+
+            return dataTable;
+        }
+
+        //public bool IsInvoiceNoExists(Purchase purchase)
+        //{
+        //    bool isExists = false;
+
+        //    //Connection
+        //    string connectionString = @"Server=DESKTOP-0LIAG2C\SQLEXPRESS; Database=BusinessManagementSystem; Integrated Security=True";
+        //    SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+        //    //Command
+        //    string commandString = @"SELECT * FROM Purchase WHERE Bill = '" + purchase. + "' ";
+        //    SqlCommand sqlCommand = new SqlCommand(commandString, sqlConnection);
+
+        //    //Execute
+        //    sqlConnection.Open();
+        //    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+        //    DataTable dataTable = new DataTable();
+        //    sqlDataAdapter.Fill(dataTable);
+        //    if (dataTable.Rows.Count > 0)
+        //    {
+        //        isExists = true;
+        //    }
+
+        //    //Close
+        //    sqlConnection.Close();
+
+        //    return isExists;
+        //}
+
+        public bool IsCodeExists(Purchase purchase)
+        {
+            bool isExists = false;
+
+            //Connection
+            string connectionString = @"Server=DESKTOP-0LIAG2C\SQLEXPRESS; Database=BusinessManagementSystem; Integrated Security=True";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+            //Command
+            //string commandString = @"SELECT * FROM Purchase WHERE Code = '" + purchase.Code + "' ";
+           // SqlCommand sqlCommand = new SqlCommand(commandString, sqlConnection);
+
+            //Execute
+            sqlConnection.Open();
+         //   SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+            DataTable dataTable = new DataTable();
+        //    sqlDataAdapter.Fill(dataTable);
+            if (dataTable.Rows.Count > 0)
+            {
+                isExists = true;
+            }
+
+            //Close
+            sqlConnection.Close();
+
+            return isExists;
+        }
+
+        public DataTable Display()
+        {
+            //Connection
+            string connectionString = @"Server=DESKTOP-0LIAG2C\SQLEXPRESS; Database=BusinessManagementSystem; Integrated Security=True";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+            //Command
+            string commandString = @"SELECT Purchase.Code, PurchaseItems.ManufacturedDate, PurchaseItems.ExpireDate, PurchaseItems.Quantity, PurchaseItems.UnitPrice, PurchaseItems.TotalPrice, PurchaseItems.MRP, PurchaseItems.Remarks FROM Purchase LEFT JOIN PurchaseItems ON Purchase.Id = PurchaseItems.Id ";
+            SqlCommand sqlCommand = new SqlCommand(commandString, sqlConnection);
+
+            //Execute
+            if (sqlConnection.State == ConnectionState.Closed)
+            {
+                sqlConnection.Open();
+            }
+
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+            DataTable dataTable = new DataTable();
+            sqlDataAdapter.Fill(dataTable);
+
+            //Close
+            sqlConnection.Close();
+
+            return dataTable;
+        }
+
+        public DataTable SupplierComboLoad()
+        {
+            //Connection
+            string connectionString = @"Server=DESKTOP-0LIAG2C\SQLEXPRESS; Database=BusinessManagementSystem; Integrated Security=True";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+            //Command
+            string commandString = @"SELECT Id, Name FROM Supplier";
+            SqlCommand sqlCommand = new SqlCommand(commandString, sqlConnection);
+
+            //Execute
+            if (sqlConnection.State == ConnectionState.Closed)
+            {
+                sqlConnection.Open();
+            }
+
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+            DataTable dataTable = new DataTable();
+            sqlDataAdapter.Fill(dataTable);
+
+            //Close
+            sqlConnection.Close();
+
+            return dataTable;
+        }
+
+        public DataTable CategoryComboLoad()
+        {
+            //Connection
+            string connectionString = @"Server=DESKTOP-0LIAG2C\SQLEXPRESS; Database=BusinessManagementSystem; Integrated Security=True";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+            //Command
+            string commandString = @"SELECT Id, Name FROM Category";
+            SqlCommand sqlCommand = new SqlCommand(commandString, sqlConnection);
+
+            //Execute
+            if (sqlConnection.State == ConnectionState.Closed)
+            {
+                sqlConnection.Open();
+            }
+
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+            DataTable dataTable = new DataTable();
+            sqlDataAdapter.Fill(dataTable);
+
+            //Close
+            sqlConnection.Close();
+
+            return dataTable;
+        }
+
+        public DataTable ProductComboLoad(int categoryId)
+        {
+            //Connection
+            string connectionString = @"Server=DESKTOP-0LIAG2C\SQLEXPRESS; Database=BusinessManagementSystem; Integrated Security=True";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+            //Command
+            string commandString = @"SELECT Product.Id, Product.Name FROM Product LEFT JOIN Category ON Product.CategoryId = Category.Id WHERE Category.Id = " + categoryId + " ";
+            SqlCommand sqlCommand = new SqlCommand(commandString, sqlConnection);
+
+            //Execute
+            if (sqlConnection.State == ConnectionState.Closed)
+            {
+                sqlConnection.Open();
+            }
+
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+            DataTable dataTable = new DataTable();
+            sqlDataAdapter.Fill(dataTable);
+
+            //Close
+            sqlConnection.Close();
+
+            return dataTable;
+        }
+
+        string productCode;
+
+        public string LoadProductCode(Product product)
+        {
+            //Connection
+            string connectionString = @"Server=DESKTOP-0LIAG2C\SQLEXPRESS; Database=BusinessManagementSystem; Integrated Security=True";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+            //Command
+            string commandString = @"SELECT Code FROM Product WHERE Name = '" + product.Name + "' ";
+            SqlCommand sqlCommand = new SqlCommand(commandString, sqlConnection);
+
+            //Execute
+            if (sqlConnection.State == ConnectionState.Closed)
+            {
+                sqlConnection.Open();
+            }
+
+            SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+
+            while (sqlDataReader.Read())
+            {
+                productCode = (sqlDataReader["Code"]).ToString();
+            }
+
+            //Close
+            sqlConnection.Close();
+
+            return productCode;
+        }
+
+        //double previousUnitPrice;
+
+        public double LoadPreviousUnitPrice(PurchaseItems purchaseItems)
+        {
+            double previousUnitPrice = 0;
+            //Connection
+            string connectionString = @"Server=DESKTOP-0LIAG2C\SQLEXPRESS; Database=BusinessManagementSystem; Integrated Security=True";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+            //Command
+            string commandString = @"SELECT PurchaseItems.PreviousUnitPrice FROM PurchaseItems LEFT JOIN Product ON PurchaseItems.ProductId = Product.Id ";
+            SqlCommand sqlCommand = new SqlCommand(commandString, sqlConnection);
+
+            //Execute
+            if (sqlConnection.State == ConnectionState.Closed)
+            {
+                sqlConnection.Open();
+            }
+
+            SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+
+            while (sqlDataReader.Read())
+            {
+                previousUnitPrice = double.Parse((sqlDataReader["PreviousUnitPrice"]).ToString());
+            }
+
+            //Close
+            sqlConnection.Close();
+
+            return previousUnitPrice;
+        }
+
+        //double previousMrp;
+
+        public double LoadPreviousMrp(PurchaseItems purchaseItems)
+        {
+            double previousMrp = 0;
+
+            //Connection
+            string connectionString = @"Server=DESKTOP-0LIAG2C\SQLEXPRESS; Database=BusinessManagementSystem; Integrated Security=True";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+            //Command
+            string commandString = @"SELECT PurchaseItems.PreviousMRP FROM PurchaseItems LEFT JOIN Product ON PurchaseItems.ProductId = Product.Id ";
+            SqlCommand sqlCommand = new SqlCommand(commandString, sqlConnection);
+
+            //Execute
+            if (sqlConnection.State == ConnectionState.Closed)
+            {
+                sqlConnection.Open();
+            }
+
+            SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+
+            while (sqlDataReader.Read())
+            {
+                previousMrp = double.Parse((sqlDataReader["PreviousMRP"]).ToString());
+            }
+
+            //Close
+            sqlConnection.Close();
+
+            return previousMrp;
+        }
+
+        public int LoadProductQuantity(int categoryId, int productId)
+        {
+            int quantity = 0;
+            //Connection
+            string connectionString = @"Server=DESKTOP-0LIAG2C\SQLEXPRESS; Database=BusinessManagementSystem; Integrated Security=True";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+            //Command
+            string commandString = $"SELECT Quantity FROM AvailableQuantity WHERE Category = {categoryId} AND Product = {productId};";
+            SqlCommand sqlCommand = new SqlCommand(commandString, sqlConnection);
+
+            //Execute
+            if (sqlConnection.State == ConnectionState.Closed)
+            {
+                sqlConnection.Open();
+            }
+
+            SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+            if (sqlDataReader.Read())
+            {
+                quantity = Convert.ToInt32(sqlDataReader["Quantity"].ToString());
+            }
+
+            //Close
+            sqlConnection.Close();
+
+            return quantity;
+        }
+
+        //public List<PurchaseItems> Add(PurchaseItems purchaseItems)
+        //{
+        //    //Connection
+        //    string connectionString = @"Server=DESKTOP-0LIAG2C\SQLEXPRESS; Database=BusinessManagementSystem; Integrated Security=True";
+        //    SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+        //    //Command 
+
+        //    string commandString = @"SELECT * FROM AddPurchase";
+        //    SqlCommand sqlCommand = new SqlCommand(commandString, sqlConnection);
+
+        //    //Open
+        //    sqlConnection.Open();
+
+        //    //With DataReader
+        //    SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+
+        //    List<PurchaseItems> _purchaseItems = new List<PurchaseItems>();
+
+        //    while (sqlDataReader.Read())
+        //    {
+        //        PurchaseItems purchaseItem = new PurchaseItems();
+        //        //Purchase purchase = new Purchase();
+
+        //        //purchase.Date = sqlDataReader["Date"].ToString();
+        //        //purchase.Bill = sqlDataReader["Bill"].ToString();
+
+        //        purchaseItem.CategoryId = Convert.ToInt32(sqlDataReader["CategoryId"]);
+        //        purchaseItem.ProductId = Convert.ToInt32(sqlDataReader["ProductId"]);
+        //        purchaseItem.AvailableQuantity = Convert.ToInt32(sqlDataReader["AvailableQuantity"]);
+        //        purchaseItem.ManufacturedDate = sqlDataReader["ManufacturedDate"].ToString();
+        //        purchaseItem.ExpireDate = sqlDataReader["ExpireDate"].ToString();
+        //        purchaseItem.Quantity = Convert.ToInt32(sqlDataReader["Quantity"]);
+        //        purchaseItem.UnitPrice = float.Parse(sqlDataReader["UnitPrice"].ToString());
+        //        purchaseItem.TotalPrice = float.Parse(sqlDataReader["TotalPrice"].ToString());
+        //        purchaseItem.PreviousUnitPrice = float.Parse(sqlDataReader["PreviousUnitPrice"].ToString());
+        //        purchaseItem.PreviousMRP = float.Parse(sqlDataReader["PreviousMRP"].ToString());
+        //        purchaseItem.MRP = float.Parse(sqlDataReader["MRP"].ToString());
+        //        purchaseItem.Remarks = sqlDataReader["Remarks"].ToString();
+
+        //        //_purchaseItems.Add(purchase);
+        //        _purchaseItems.Add(purchaseItem);
+        //    }
+
+        //    //Close
+        //    sqlConnection.Close();
+
+        //    return _purchaseItems;
+        //}
+
+        //public DataTable Submit(Purchase purchase, PurchaseItems purchaseItems)
+        //{
+        //    //Connection
+        //    string connectionString = @"Server=DESKTOP-0LIAG2C\SQLEXPRESS; Database=BusinessManagementSystem; Integrated Security=True";
+        //    SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+        //    //Command 
+
+        //    //  string commandString = @"INSERT INTO Purchase(Date, Bill, SupplierId, Code) VALUES ('" + purchase.Date + "', '" + purchase.Bill + "', " + purchase.SupplierId + ", '" + purchase.Code + "') AND INSERT INTO PurchaseItems(CategoryId, ProductId, AvailableQuantity, ManufacturedDate, ExpireDate, Quantity, UnitPrice, TotalPrice, PreviousUnitPrice, PreviousMRP, MRP, Remarks) VALUES(" + purchaseItems.CategoryId + ", " + purchaseItems.ProductId + ", " + purchaseItems.AvailableQuantity + ", '" + purchaseItems.ManufacturedDate + "', '" + purchaseItems.ExpireDate + "', " + purchaseItems.Quantity + ", " + purchaseItems.UnitPrice + ", " + purchaseItems.TotalPrice + ", " + purchaseItems.PreviousUnitPrice + ", " + purchaseItems.PreviousMRP + ", " + purchaseItems.MRP + ", " + purchaseItems.Remarks + " ON Purchase.Id = PurchaseItems.Id";
+        //    SqlCommand sqlCommand = new SqlCommand(commandString, sqlConnection);
+
+        //    //Execute
+        //    if (sqlConnection.State == ConnectionState.Closed)
+        //    {
+        //        sqlConnection.Open();
+        //    }
+
+        //    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+        //    DataTable dataTable = new DataTable();
+        //    sqlDataAdapter.Fill(dataTable);
+
+        //    //Close
+        //    sqlConnection.Close();
+
+        //    return dataTable;
+        //}
+
+        //public List<PurchaseItems> Add(PurchaseItems purchaseItems)
+        //{
+        //    bool isAdded = false;
+
+        //    //Connection
+        //    string connectionString = @"Server=DESKTOP-0LIAG2C\SQLEXPRESS; Database=BusinessManagementSystem; Integrated Security=True";
+        //    SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+        //    //Command
+        //    string commandString = @"INSERT INTO Purchase (Date, Bill, SupplierId, CategoryId, ProductId, Code, AvailableQuantity, ManufacturedDate, ExpireDate, Quantity, UnitPrice, TotalPrice, PreviousUnitPrice, PreviousMRP, MRP, Remarks) VALUES ('" + purchase.Date + "', '" + purchase.Bill + "', " + purchase.SupplierId + ", " + purchase.CategoryId + ", " + purchase.ProductId + ", '" + purchase.Code + "', " + purchase.AvailableQuantity + ", '" + purchase.ManufacturedDate + "', '" + purchase.ExpireDate + "', " + purchase.Quantity + ", " + purchase.UnitPrice + ", " + purchase.TotalPrice + ", " + purchase.PreviousUnitPrice + ", " + purchase.PreviousMRP + ", " + purchase.MRP + ", '" + purchase.Remarks + "' )";
+        //    SqlCommand sqlCommand = new SqlCommand(commandString, sqlConnection);
+
+        //    //Execute
+        //    sqlConnection.Open();
+
+        //    int isExecuted = sqlCommand.ExecuteNonQuery();
+
+        //    if (isExecuted > 0)
+        //    {
+        //        isAdded = true;
+        //    }
+
+        //    //Close
+        //    sqlConnection.Close();
+
+        //    return isAdded;
+        //}
+
+        ////string availableQuantity;
+
+        //public List<Purchase> Search(string search)
+        //{
+        //    //Connection
+        //    string connectionString = @"Server=DESKTOP-0LIAG2C\SQLEXPRESS; Database=BusinessManagementSystem; Integrated Security=True";
+        //    SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+        //    //Command 
+
+        //    string commandString = @"SELECT Purchase.Code, PurchaseItems.ManufacturedDate, PurchaseItems.ExpireDate, PurchaseItems.Quantity, PurchaseItems.UnitPrice, PurchaseItems.TotalPrice, PurchaseItems.MRP, PurchaseItems.Remarks FROM Purchase LEFT JOIN PurchaseItems ON Purchase.Id = PurchaseItems.Id WHERE Purchase.Code = '" + search + "' ";
+        //    SqlCommand sqlCommand = new SqlCommand(commandString, sqlConnection);
+
+        //    //Open
+        //    sqlConnection.Open();
+
+        //    //With DataReader
+        //    SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+
+        //    List<Purchase> purchases = new List<Purchase>();
+
+        //    while (sqlDataReader.Read())
+        //    {
+        //        Purchase purchase = new Purchase();
+        //        Product product = new Product();
+
+        //        product.Code = sqlDataReader["Code"].ToString();
+        //        purchase.ManufacturedDate = sqlDataReader["ManufacturedDate"].ToString();
+        //        purchase.ExpireDate = sqlDataReader["ExpireDate"].ToString();
+        //        purchase.Quantity = Convert.ToInt32(sqlDataReader["Quantity"]);
+        //        purchase.UnitPrice = Convert.ToDouble(sqlDataReader["UnitPrice"]);
+        //        purchase.TotalPrice = Convert.ToDouble(sqlDataReader["TotalPrice"]);
+        //        purchase.MRP = Convert.ToDouble(sqlDataReader["MRP"]);
+        //        purchase.Remarks = sqlDataReader["Remarks"].ToString();
+
+        //        purchases.Add(purchase);
+        //    }
+
+        //    //Close
+        //    sqlConnection.Close();
+
+        //    return purchases;
+        //}
+
+        //public List<Supplier> SupplierCombo()
+        //{
+        //    //Connection
+        //    string connectionString = @"Server=DESKTOP-0LIAG2C\SQLEXPRESS; Database=BusinessManagementSystem; Integrated Security=True";
+        //    SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+        //    //Command
+        //    string commandString = @"SELECT Id, Name FROM Supplier";
+        //    SqlCommand sqlCommand = new SqlCommand(commandString, sqlConnection);
+
+        //    //Execute
+        //    sqlConnection.Open();
+
+        //    List<Supplier> suppliers = new List<Supplier>();
+
+        //    SqlDataReader dataReader = sqlCommand.ExecuteReader();
+        //    while (dataReader.Read())
+        //    {
+        //        Supplier supplier = new Supplier();
+        //        supplier.Id = int.Parse(dataReader["Id"].ToString());
+        //        supplier.Name = dataReader["Name"].ToString();
+
+        //        suppliers.Add(supplier);
+        //    }
+
+        //    //Close
+        //    sqlConnection.Close();
+
+        //    return suppliers;
+        //}
+
+        //public List<Category> CategoryCombo()
+        //{
+        //    //Connection
+        //    string connectionString = @"Server=DESKTOP-0LIAG2C\SQLEXPRESS; Database=BusinessManagementSystem; Integrated Security=True";
+        //    SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+        //    //Command
+        //    string commandString = @"SELECT Id, Name FROM Category";
+        //    SqlCommand sqlCommand = new SqlCommand(commandString, sqlConnection);
+
+        //    //Execute
+        //    sqlConnection.Open();
+
+        //    List<Category> categories = new List<Category>();
+
+        //    SqlDataReader dataReader = sqlCommand.ExecuteReader();
+        //    while (dataReader.Read())
+        //    {
+        //        Category category = new Category();
+        //        category.Id = int.Parse(dataReader["Id"].ToString());
+        //        category.Name = dataReader["Name"].ToString();
+
+        //        categories.Add(category);
+        //    }
+
+        //    //Close
+        //    sqlConnection.Close();
+
+        //    return categories;
+        //}
+
+        //public List<Product> ProductCombo()
+        //{
+        //    Purchase purchase = new Purchase();
+        //    //Connection
+        //    string connectionString = @"Server=DESKTOP-0LIAG2C\SQLEXPRESS; Database=BusinessManagementSystem; Integrated Security=True";
+        //    SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+        //    //Command
+        //    string commandString = @"SELECT Id, Name FROM Product WHERE CategoryId = " + purchase.CategoryId + "";
+        //    SqlCommand sqlCommand = new SqlCommand(commandString, sqlConnection);
+
+        //    //Execute
+        //    sqlConnection.Open();
+
+        //    List<Product> products = new List<Product>();
+
+        //    SqlDataReader dataReader = sqlCommand.ExecuteReader();
+        //    while (dataReader.Read())
+        //    {
+        //        Product product = new Product();
+        //        product.Id = int.Parse(dataReader["Id"].ToString());
+        //        product.Name = dataReader["Name"].ToString();
+
+        //        products.Add(product);
+        //    }
+
+        //    //Close
+        //    sqlConnection.Close();
+
+        //    return products;
+        //}
+
+        //public List<Category> SearchProducts(string category)
+        //{
+        //    //Connection
+        //    string connectionString = @"Server=DESKTOP-0LIAG2C\SQLEXPRESS; Database=BusinessManagementSystem; Integrated Security=True";
+        //    SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+        //    //Command 
+
+        //    string commandString = @"SELECT * FROM Category WHERE Name = '" + category + "' ";
+        //    SqlCommand sqlCommand = new SqlCommand(commandString, sqlConnection);
+
+        //    //Open
+        //    sqlConnection.Open();
+
+        //    List<Category> categories = new List<Category>();
+
+        //    SqlDataReader dataReader = sqlCommand.ExecuteReader();
+        //    while (dataReader.Read())
+        //    {
+        //        Category Category = new Category();
+        //        Category.Id = int.Parse(dataReader["Id"].ToString());
+        //        Category.Name = dataReader["Name"].ToString();
+        //        Category.Code = dataReader["Code"].ToString();
+
+        //        categories.Add(Category);
+        //    }
+
+        //    sqlConnection.Close();
+
+        //    return categories;
+        //}
+
+        //public int GetAvailableQuantity(string code)
+        //{
+        //    int availableQuantity = 0;
+
+        //    //Connection
+        //    string connectionString = @"Server=DESKTOP-0LIAG2C\SQLEXPRESS; Database=BusinessManagementSystem; Integrated Security=True";
+        //    SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+        //    //Command 
+
+        //    string commandString = @"SELECT AvailableQuantity FROM Purchase WHERE Code = '" + code + "'";
+        //    SqlCommand sqlCommand = new SqlCommand(commandString, sqlConnection);
+
+        //    //Open
+        //    sqlConnection.Open();
+
+        //    SqlDataReader dataReader = sqlCommand.ExecuteReader();
+        //    while (dataReader.Read())
+        //    {
+        //        if (String.IsNullOrEmpty(dataReader["AvailableQuantity"].ToString()))
+        //        {
+        //            availableQuantity = int.Parse(dataReader["AvailableQuantity"].ToString());
+        //        }
+        //    }
+
+        //    sqlConnection.Close();
+
+        //    return availableQuantity;
+        //}
